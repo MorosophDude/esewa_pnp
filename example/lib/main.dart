@@ -11,8 +11,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ESewaPnp _esewaPnp;
-  ESewaConfiguration _configuration;
+  late final ESewaPnp _esewaPnp;
+  late final ESewaConfiguration _configuration;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -60,9 +60,7 @@ class _MyAppState extends State<MyApp> {
                   labelText: "Enter amount",
                 ),
               ),
-              SizedBox(
-                height: 16,
-              ),
+              SizedBox(height: 16),
               ESewaPaymentButton(
                 this._esewaPnp,
                 amount: _amount,
@@ -70,19 +68,25 @@ class _MyAppState extends State<MyApp> {
                 productId: "abc123",
                 productName: "Flutter SDK Example",
                 onSuccess: (result) {
-                  ScaffoldMessenger.of(context).showSnackBar(_buildSnackBar(
-                      Color.fromRGBO(65, 161, 36, 1), result.message));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    _buildSnackBar(
+                      Color.fromRGBO(65, 161, 36, 1),
+                      result.message ?? "result.message == null",
+                    ),
+                  );
                 },
                 onFailure: (e) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(_buildSnackBar(Colors.red, e.message));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    _buildSnackBar(
+                      Colors.red,
+                      e.message ?? "exception.message == null",
+                    ),
+                  );
                 },
               ),
-              SizedBox(
-                height: 84,
-              ),
+              SizedBox(height: 84),
               Text(
-                "Plugin developed by Ashim Upadhaya.",
+                "Plugin developed by Ashim Upadhaya. May 29, 2023 मा मैले यो plugin भेट्टाउदा abandonware जस्तै भै सकेको थियो| Developer पप्पु ले आफुले त केहि नँया update गरेको थिएन अरुले मिलाएर create गरेको PR पनि ignore गरि राखेको थियो|",
                 style: TextStyle(color: Colors.black45),
               )
             ],
@@ -92,10 +96,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget _buildSnackBar(Color color, String msg) {
-    return SnackBar(
-      backgroundColor: color,
-      content: Text(msg),
-    );
-  }
+  SnackBar _buildSnackBar(Color color, String msg) => SnackBar(
+        backgroundColor: color,
+        content: Text(msg),
+      );
 }
